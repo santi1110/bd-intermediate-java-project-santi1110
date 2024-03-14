@@ -56,19 +56,15 @@ public class Shell {
      *
      * @param args command line args (ignored).
      * */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Shell shell = new Shell(App.getPromiseHistoryClient(), new ATAUserHandler());
         shell.processCommandLineArgs(args);
 
-        try
-        {
-            do
-            {
-                System.out.println(shell.handleUserRequest());
-            } while (shell.userHasAnotherRequest());
-        } catch (Exception e)
-        {
+        try {
+            do {
+                System.out.println(shell.handleUserRequest()); }
+            while (shell.userHasAnotherRequest());
+        } catch (Exception e) {
             System.out.println("Error encountered. Exiting.");
         }
 
