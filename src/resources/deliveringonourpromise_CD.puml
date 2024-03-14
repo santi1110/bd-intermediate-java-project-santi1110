@@ -1,0 +1,57 @@
+@startuml
+actor Shell
+participant PromiseHistoryClient
+participant GetPromiseHistoryByOrderIdActivity
+participant OrderDao
+participant PromiseDao
+participant OrderManipulationAuthorityClient
+participant DeliveryPromiseServiceClient
+
+Shell -> PromiseHistoryClient : getPromiseHistoryByOrderId(orderId: String)
+PromiseHistoryClient -> GetPromiseHistoryByOrderIdActivity : getPromiseHistoryByOrderId(orderId: String)
+GetPromiseHistoryByOrderIdActivity -> OrderDao : get(orderId: String)
+OrderDao -> OrderManipulationAuthorityClient : getCustomerOrderByOrderId((orderId: String)
+OrderManipulationAuthorityClient --> OrderDao : OrderResult
+OrderDao --> GetPromiseHistoryByOrderIdActivity : Order
+GetPromiseHistoryByOrderIdActivity -> PromiseDao : get(customerOrderItemId: String)
+PromiseDao -> OrderManipulationAuthorityClient : getCustomerOrderItemByOrderItemId(orderItemId: String)
+OrderManipulationAuthorityClient --> PromiseDao : OrderResultItem
+PromiseDao -> OrderManipulationAuthorityClient : getCustomerOrderByOrderId(orderId: String)
+OrderManipulationAuthorityClient --> PromiseDao : OrderResult
+PromiseDao -> PromiseDao : add the shipment date to the promise
+PromiseDao -> DeliveryPromiseServiceClient : getDeliveryPromiseByOrderItemId(orderItemId: String)
+DeliveryPromiseServiceClient --> PromiseDao : Promise
+PromiseDao --> GetPromiseHistoryByOrderIdActivity : List <Promise>
+GetPromiseHistoryByOrderIdActivity -> GetPromiseHistoryByOrderIdActivity : pack promises into PromiseHistory
+GetPromiseHistoryByOrderIdActivity --> PromiseHistoryClient : PromiseHistory
+PromiseHistoryClient --> Shell : PromiseHistory
+Shell -> Shell : display
+
+
+@enduml
+
+@startuml
+
+class App {
+}
+
+class OrderItem{
+}
+
+class Order{
+
+}
+class Promise{
+}
+class PromiseDao{
+}
+Interface ReadOnlyDao{
+}
+
+PromiseHistory o-- Order
+PromiseHistory o-- Promise
+Order o-- OrderItem
+OrderDao ..|> ReadOnlyDao
+PromiseDao ..|> ReadOnlyDao
+
+@enduml
