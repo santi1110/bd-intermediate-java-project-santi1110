@@ -39,3 +39,17 @@ Happy case, verifying that the OrderDao can return an order.
 
 ### Then
 * The result is not null
+
+@Test
+public void get_forKnownOrderId_returnsOrder(){
+
+//GIVEN
+String invalidOrderId = "INVALID123";
+
+//WHEN
+    Order result = orderDao.get(invalidOrderId);
+
+//THEN
+    assertNull("Expected result to be null for invalid order ID", result);
+}
+
