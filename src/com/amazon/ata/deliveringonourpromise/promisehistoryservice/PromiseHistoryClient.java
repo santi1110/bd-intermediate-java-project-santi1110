@@ -34,5 +34,4 @@ public class PromiseHistoryClient {
      */
     public PromiseHistory getPromiseHistoryByOrderId(String orderId) {
         return getPromiseHistoryByOrderIdActivity.getPromiseHistoryByOrderId(orderId);
-    }
-}
+    }}

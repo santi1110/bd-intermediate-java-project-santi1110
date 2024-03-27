@@ -19,7 +19,7 @@ public class GetPromiseHistoryByOrderIdActivity {
      * Instantiates an activity for handling the API, accepting the relevant DAOs to
      * perform its work.
      *
-     * @param orderDao data access object fo retrieving Orders by order ID
+     * @param orderDao   data access object fo retrieving Orders by order ID
      * @param promiseDao data access object for retrieving Promises by order item ID
      */
     public GetPromiseHistoryByOrderIdActivity(ReadOnlyDao<String, Order> orderDao,
@@ -31,6 +31,7 @@ public class GetPromiseHistoryByOrderIdActivity {
     /**
      * Returns the PromiseHistory for the given order ID, if the order exists. If the order does
      * not exist a PromiseHistory with a null order and no promises will be returned.
+     *
      * @param orderId The order ID to fetch PromiseHistory for
      * @return PromiseHistory containing the order and promise history for that order
      */
@@ -40,22 +41,24 @@ public class GetPromiseHistoryByOrderIdActivity {
         }
 
         Order order = orderDao.get(orderId);
-
-        List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
-        OrderItem customerOrderItem = null;
-        if (customerOrderItems != null && !customerOrderItems.isEmpty()) {
-            customerOrderItem = customerOrderItems.get(0);
-        }
-
-        PromiseHistory history = new PromiseHistory(order);
-        if (customerOrderItem != null) {
-            List<Promise> promises = promiseDao.get(customerOrderItem.getCustomerOrderItemId());
-            for (Promise promise : promises) {
-                promise.setConfidence(customerOrderItem.isConfidenceTracked(), customerOrderItem.getConfidence());
-                history.addPromise(promise);
+        if (order != null) {
+            List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
+            OrderItem customerOrderItem = null;
+            if (customerOrderItems != null && !customerOrderItems.isEmpty()) {
+                customerOrderItem = customerOrderItems.get(0);
             }
-        }
 
-        return history;
+            PromiseHistory history = new PromiseHistory(order);
+            if (customerOrderItem != null) {
+                List<Promise> promises = promiseDao.get(customerOrderItem.getCustomerOrderItemId());
+                for (Promise promise : promises) {
+                    promise.setConfidence(customerOrderItem.isConfidenceTracked(), customerOrderItem.getConfidence());
+                    history.addPromise(promise);
+                }
+                return history;
+            }
+            return history;
+        }
+        return new PromiseHistory(order);
     }
 }
