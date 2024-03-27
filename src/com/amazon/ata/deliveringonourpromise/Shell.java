@@ -65,8 +65,6 @@ public class Shell {
                 System.out.println(shell.handleUserRequest()); }
             while (shell.userHasAnotherRequest());
         } catch (Exception e) {
-        /*    System.out.println("Error encountered: " + e.getMessage());
-            e.printStackTrace();*/
             System.out.println("Error encountered. Exiting.");
         }
         System.out.println("Thank you for using the Promise History CLI. Have a great day!\n\n");
