@@ -59,6 +59,6 @@ public class GetPromiseHistoryByOrderIdActivity {
             }
             return history;
         }
-        return new PromiseHistory(order);
+        return new PromiseHistory(null);
     }
 }

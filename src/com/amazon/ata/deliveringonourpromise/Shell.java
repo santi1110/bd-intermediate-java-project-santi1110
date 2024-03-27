@@ -87,15 +87,13 @@ public class Shell {
         } while ("".equals(response));
 
         PromiseHistory promiseHistory = promiseHistoryClient.getPromiseHistoryByOrderId(response);
-        if (promiseHistory != null){
-            if (promiseHistory.getOrder() != null){
+        if (promiseHistory != null) {
+            if (promiseHistory.getOrder() != null) {
                 return renderOrderTable(promiseHistory.getOrder()) + renderPromiseHistoryTable(promiseHistory);
             }
-      /* if (promiseHistory.getOrder() == null) {*/
-       /*    return renderOrderTable(promiseHistory.getOrder()) + renderPromiseHistoryTable(promiseHistory);//*String.format(UNKNOWN_ORDER_MESSAGE, response);
-        }*/
-/*        return renderOrderTable(promiseHistory.getOrder()) + renderPromiseHistoryTable(promiseHistory);*/
-    }return String.format(UNKNOWN_ORDER_MESSAGE, response);}
+        }
+        return String.format(UNKNOWN_ORDER_MESSAGE, response);
+    }
 
     /**
      * Generates the user-facing representation of the given promise history.
