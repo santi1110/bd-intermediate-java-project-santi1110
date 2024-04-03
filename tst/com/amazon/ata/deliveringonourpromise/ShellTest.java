@@ -46,7 +46,7 @@ public class ShellTest {
         shell = new Shell(mockPromiseHistoryClient, mockUserHandler);
     }
 
-    @Test
+@Test
     public void handleUserRequest_orderWithNullFields_doesntRaiseException() {
         // GIVEN
         String orderId = "111-7497023-2960775";

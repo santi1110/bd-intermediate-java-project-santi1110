@@ -4,7 +4,9 @@ import com.amazon.ata.ordermanipulationauthority.OrderCondition;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
 
 
 /**
@@ -31,15 +33,17 @@ import java.util.List;
  * * orderDate: the timestamp of when the order was placed
  */
 public class Order {
-    public String orderId;
-    public String customerId;
-    public String marketplaceId;
-    public OrderCondition condition;
-    public List<OrderItem> customerOrderItemList = new ArrayList<>();
-    public String shipOption;
-    public ZonedDateTime orderDate;
+    private String orderId;
+    private String customerId;
+    private String marketplaceId;
+    private OrderCondition condition;
+    private List<OrderItem> customerOrderItemList = new ArrayList<>();
+    private String shipOption;
+    private ZonedDateTime orderDate;
 
-    private Order() { }
+    private Order() {
+
+    }
 
     /**
      * Returns a new Order.Builder object for constructing an Order.
@@ -64,6 +68,7 @@ public class Order {
     public OrderCondition getCondition() {
         return condition;
     }
+
 
     /**
      * Returns a list containing all of the order items in this order.
@@ -137,7 +142,7 @@ public class Order {
          * @return updated Builder
          */
         public Builder withCustomerOrderItemList(List<OrderItem> customerOrderItemList) {
-            this.customerOrderItemList = customerOrderItemList;
+            this.customerOrderItemList = Collections.unmodifiableList(new ArrayList<>(customerOrderItemList));
             return this;
         }
 
@@ -168,8 +173,8 @@ public class Order {
             order.customerOrderItemList = customerOrderItemList;
             order.shipOption = shipOption;
             order.orderDate = orderDate;
-
             return order;
+
         }
     }
 }
