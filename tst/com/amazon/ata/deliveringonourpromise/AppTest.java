@@ -10,5 +10,6 @@ public class AppTest {
     public void getPromiseHistoryClient_always_createsPromiseHistoryClient() {
         // WHEN + THEN
         assertNotNull(App.getPromiseHistoryClient());
+        assertNotNull(App.getOrderFulfillmentServiceClient());
     }
 }

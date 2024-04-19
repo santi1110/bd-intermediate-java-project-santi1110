@@ -18,11 +18,9 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
+import static org.testng.Assert.*;
 
-public class MasteryTaskFourTests {
+ public class MasteryTaskFourTests {
     private PromiseHistoryClient client;
 
     @BeforeMethod
@@ -62,7 +60,8 @@ public class MasteryTaskFourTests {
 
         // WHEN
         Constructor<?>[] promiseDaoConstructors = promiseDaoClass.getConstructors();
-
+        System.out.println("printing PromiseDaoConstructors.lenth");
+        System.out.println(promiseDaoConstructors.length);
         // THEN
         boolean containsAList = false;
         for (Constructor<?> promiseDaoConstructor : promiseDaoConstructors) {

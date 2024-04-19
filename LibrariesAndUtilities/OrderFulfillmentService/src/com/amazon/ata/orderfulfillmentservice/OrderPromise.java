@@ -1,5 +1,4 @@
 package com.amazon.ata.orderfulfillmentservice;
-
 import java.time.ZonedDateTime;
 
 /**

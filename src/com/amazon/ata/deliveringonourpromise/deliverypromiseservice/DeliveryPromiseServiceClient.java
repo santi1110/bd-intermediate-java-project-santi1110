@@ -1,5 +1,6 @@
 package com.amazon.ata.deliveringonourpromise.deliverypromiseservice;
 
+import com.amazon.ata.deliveringonourpromise.PromiseClients;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
 import com.amazon.ata.deliverypromiseservice.service.DeliveryPromise;
 import com.amazon.ata.deliverypromiseservice.service.DeliveryPromiseService;
@@ -7,8 +8,9 @@ import com.amazon.ata.deliverypromiseservice.service.DeliveryPromiseService;
 /**
  * Client for accessing the DeliveryPromiseService to retrieve Promises.
  */
-public class DeliveryPromiseServiceClient {
+public class DeliveryPromiseServiceClient implements PromiseClients {
     private DeliveryPromiseService dpService;
+
 
     /**
      * Create new client that calls DPS with the given service object.

@@ -37,7 +37,7 @@ public class PromiseDaoTest {
     // participants: @BeforeEach means this method is run before each test method is executed, often setting up data +
     // an instance of the class under test.
     @BeforeEach
-    private void setup() {
+    public void setup() {
         // order fixtures: these are specific known test orders.
         shippedOrderId = "900-3746401-0000002";
         deliveredOrderId = "900-3746401-0000003";
