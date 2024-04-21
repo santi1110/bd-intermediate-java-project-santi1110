@@ -41,8 +41,14 @@ public class App {
     public static OrderDao getOrderDao() {
         return new OrderDao(getOrderManipulationAuthorityClient());
     }
+
+    /**
+     *
+     * @return PromiseDao
+     */
     public static PromiseDao getPromiseDao() {
         List<PromiseClients> clients = new ArrayList<>();
+
         clients.add(getDeliveryPromiseServiceClient());
         clients.add(getOrderFulfillmentServiceClient());
         return new PromiseDao(clients,
@@ -71,11 +77,12 @@ public class App {
         return OrderDatastore.getDatastore();
     }
 
-    public static OrderFulfillmentService getOrderFulfillmentService(){
-        return new OrderFulfillmentService(getOrderDatastore(),getDeliveryPromiseService());}
+    public static OrderFulfillmentService getOrderFulfillmentService() {
+        return new OrderFulfillmentService(getOrderDatastore(), getDeliveryPromiseService());
+    }
 
 
-    public static OrderFulfillmentServiceClient getOrderFulfillmentServiceClient(){
+    public static OrderFulfillmentServiceClient getOrderFulfillmentServiceClient() {
         return new OrderFulfillmentServiceClient(getOrderFulfillmentService());
     }
 }

@@ -2,10 +2,9 @@ package com.amazon.ata.deliveringonourpromise.orderfulfillmentservice;
 
 import com.amazon.ata.deliveringonourpromise.PromiseClients;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
-import com.amazon.ata.orderfulfillmentservice.OrderPromise;
 import com.amazon.ata.orderfulfillmentservice.OrderFulfillmentService;
+import com.amazon.ata.orderfulfillmentservice.OrderPromise;
 
-import java.util.concurrent.CompletableFuture;
 
 public class OrderFulfillmentServiceClient implements PromiseClients {
     private OrderFulfillmentService ofService;
@@ -28,7 +27,8 @@ public class OrderFulfillmentServiceClient implements PromiseClients {
      */
     public Promise getDeliveryPromiseByOrderItemId(String customerOrderItemId) {
         // Retrieve the order using the customerOrderItemId
-       OrderPromise orderPromise = ofService.getOrderPromise(customerOrderItemId);
+        OrderPromise orderPromise = ofService.getOrderPromise(customerOrderItemId);
+
 
         if (null == orderPromise) {
             return null;
@@ -36,14 +36,14 @@ public class OrderFulfillmentServiceClient implements PromiseClients {
 
         // Process the order and create an OrderFulfillment object
         return Promise.builder()
-                .withCustomerOrderItemId(orderPromise.getCustomerOrderItemId())
                 .withPromiseLatestArrivalDate(orderPromise.getPromiseLatestArrivalDate())
+                .withCustomerOrderItemId(orderPromise.getCustomerOrderItemId())
+                .withPromiseLatestShipDate(orderPromise.getPromiseLatestShipDate())
                 .withPromiseEffectiveDate(orderPromise.getPromiseEffectiveDate())
                 .withIsActive(orderPromise.isActive())
-                .withPromiseLatestShipDate(orderPromise.getPromiseLatestShipDate())
                 .withPromiseProvidedBy(orderPromise.getPromiseProvidedBy())
+                .withAsin(orderPromise.getAsin())
                 .build();
     }
-
 
 }
