@@ -56,23 +56,21 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
      */
     @Override
     public List<Promise> get(String customerOrderItemId) {
-        // Fetch the delivery date, so we can add to any promises that we find
         ZonedDateTime itemDeliveryDate = getDeliveryDateForOrderItem(customerOrderItemId);
         List<Promise> promises = new ArrayList<>();
 
-        // fetch Promise from Delivery Promise Service. If exists, add to list of Promises to return.
-        // Set delivery date
         if (clients != null) {
             for (PromiseClients client : clients) {
                 Promise dpsPromise = client.getDeliveryPromiseByOrderItemId(customerOrderItemId);
                 if (dpsPromise != null) {
                     dpsPromise.setDeliveryDate(itemDeliveryDate);
                     promises.add(dpsPromise);
-                }  else {
+                } else {
                     System.out.println("No delivery promise found for order item ID: " + customerOrderItemId);
                 }
             }
         }
+        System.out.println("Number of promises fetched from PromiseDao: " + promises.size());
         return promises;
     }
 

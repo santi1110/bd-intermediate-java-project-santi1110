@@ -1,5 +1,6 @@
 package com.amazon.ata.deliveringonourpromise.activity;
 
+import com.amazon.ata.deliveringonourpromise.comparators.PromiseAsinComparator;
 import com.amazon.ata.deliveringonourpromise.dao.ReadOnlyDao;
 import com.amazon.ata.deliveringonourpromise.types.Order;
 import com.amazon.ata.deliveringonourpromise.types.OrderItem;
@@ -36,29 +37,32 @@ public class GetPromiseHistoryByOrderIdActivity {
      * @return PromiseHistory containing the order and promise history for that order
      */
     public PromiseHistory getPromiseHistoryByOrderId(String orderId) {
-        if (null == orderId) {
-            throw new IllegalArgumentException("order ID cannot be null");
+        if (orderId == null) {
+            throw new IllegalArgumentException("Order ID cannot be null");
         }
 
         Order order = orderDao.get(orderId);
-        if (order != null) {
-            List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
-            OrderItem customerOrderItem = null;
-            if (customerOrderItems != null && !customerOrderItems.isEmpty()) {
-                customerOrderItem = customerOrderItems.get(0);
-            }
-
-            PromiseHistory history = new PromiseHistory(order);
-            if (customerOrderItem != null) {
-                List<Promise> promises = promiseDao.get(customerOrderItem.getCustomerOrderItemId());
-                for (Promise promise : promises) {
-                    promise.setConfidence(customerOrderItem.isConfidenceTracked(), customerOrderItem.getConfidence());
-                    history.addPromise(promise);
-                }
-                return history;
-            }
-            return history;
+        if (order == null) {
+            // Handle the case when the order is not found
+            return new PromiseHistory(null);
         }
-        return new PromiseHistory(null);
+
+        List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
+        PromiseHistory history = new PromiseHistory(order);
+
+        for (OrderItem customerOrderItem : customerOrderItems) {
+            List<Promise> promises = promiseDao.get(customerOrderItem.getCustomerOrderItemId());
+            System.out.println("Number of promises fetched for order item ID " +
+                    customerOrderItem.getCustomerOrderItemId() + ": " + promises.size());
+
+            // Sort promises by ASIN using your custom comparator
+            promises.sort(new PromiseAsinComparator());
+
+            for (Promise promise : promises) {
+                promise.setConfidence(customerOrderItem.isConfidenceTracked(), customerOrderItem.getConfidence());
+                history.addPromise(promise);
+            }
+        }
+        return history;
     }
 }
